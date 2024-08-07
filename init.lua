@@ -89,7 +89,19 @@ P.S. You can delete this when you're done too. It's your config now! :)
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
-
+local function run_git_commands(args)
+  local handle = io.popen('git ' .. args['args'])
+  if handle == nil then
+    return
+  end
+  local result = handle:read '*a'
+  if result == nil then
+    return
+  end
+  handle:close()
+  print(result)
+end
+vim.api.nvim_create_user_command('G', run_git_commands, { nargs = '?' })
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = false
 
