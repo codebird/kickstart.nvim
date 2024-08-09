@@ -92,11 +92,12 @@ vim.g.maplocalleader = ' '
 local function run_git_commands(args)
   local handle = io.popen('git ' .. args['args'])
   if handle == nil then
+    print(111111)
     return
   end
-  print(11111)
   local result = handle:read '*a'
   if result == nil then
+    print(22222)
     return
   end
   handle:close()
