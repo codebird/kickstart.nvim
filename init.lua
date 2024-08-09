@@ -99,7 +99,7 @@ local function run_git_commands(args)
     return
   end
   handle:close()
-  for token in string.gmatch(result, '[^\n]') do
+  for token in string.gmatch(result, '[^\r\n]') do
     print(token)
   end
 end
