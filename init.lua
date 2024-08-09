@@ -99,9 +99,9 @@ local function run_git_commands(args)
     return
   end
   handle:close()
-  for token in string.gmatch(result, '[^\r\n]') do
-    print(token)
-  end
+  result = string.gsub(result, '^%s+', '')
+  result = string.gsub(result, '%s+$', '')
+  result = string.gsub(result, '[\n\r]+', ' ')
 end
 vim.api.nvim_create_user_command('G', run_git_commands, { nargs = '?' })
 -- Set to true if you have a Nerd Font installed and selected in the terminal
