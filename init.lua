@@ -99,8 +99,7 @@ local function run_git_commands(args)
     return
   end
   handle:close()
-  print(result .. '\n')
-  print()
+  return result .. '\n'
 end
 vim.api.nvim_create_user_command('G', run_git_commands, { nargs = '?' })
 -- Set to true if you have a Nerd Font installed and selected in the terminal
