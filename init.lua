@@ -99,11 +99,12 @@ local function run_git_commands(args)
     return
   end
   handle:close()
-  print(result)
+  print(result .. '\n')
+  print()
 end
 vim.api.nvim_create_user_command('G', run_git_commands, { nargs = '?' })
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -201,7 +202,9 @@ vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left wind
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
-
+vim.keymap.set('n', '<C-b>', function()
+  require('oil').toggle_float './'
+end)
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -266,6 +269,12 @@ require('lazy').setup({
         changedelete = { text = '~' },
       },
     },
+  },
+  {
+    'stevearc/oil.nvim',
+    opts = {},
+    -- Optional dependencies
+    dependencies = { 'nvim-tree/nvim-web-devicons', enabled = true },
   },
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
