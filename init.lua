@@ -94,14 +94,12 @@ local function run_git_commands(args)
   if handle == nil then
     return
   end
+  print(11111)
   local result = handle:read '*a'
   if result == nil then
     return
   end
   handle:close()
-  result = string.gsub(result, '^%s+', '')
-  result = string.gsub(result, '%s+$', '')
-  result = string.gsub(result, '[\n\r]+', ' ')
   print(result)
 end
 vim.api.nvim_create_user_command('G', run_git_commands, { nargs = '?' })
