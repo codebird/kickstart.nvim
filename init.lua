@@ -90,16 +90,16 @@ P.S. You can delete this when you're done too. It's your config now! :)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 local function run_git_commands(args)
-  local handle = io.popen('git ' .. args['args'])
-  if handle == nil then
-    return
-  end
+  io.stdout:setvbuf 'no'
+  local handle = assert(io.popen('git ' .. args['args']))
+  handle:flush()
   local result = handle:read '*a'
   if result == nil then
+    print '\n'
     return
   end
   handle:close()
-  --  print(result)
+  print(result)
 end
 vim.api.nvim_create_user_command('G', run_git_commands, { nargs = '?' })
 -- Set to true if you have a Nerd Font installed and selected in the terminal
