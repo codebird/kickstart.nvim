@@ -91,7 +91,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 local function run_git_commands(args)
   io.stdout:setvbuf 'no'
-  local handle = assert(io.popen('git ' .. args['args']))
+  local handle = assert(io.popen('git ' .. args['args']) .. '2>&1')
   handle:flush()
   local result = handle:read '*a'
   if result == nil then
