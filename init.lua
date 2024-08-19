@@ -89,7 +89,8 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 vim.keymap.set('n', '<C-b>', function()
-  require('oil').toggle_float './'
+  local location = vim.api.nvim_buf_get_name(0):gsub(vim.fn.expand '%', '')
+  require('oil').toggle_float(location)
 end)
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
