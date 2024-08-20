@@ -89,7 +89,7 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 vim.keymap.set('n', '<C-b>', function()
-  local location = vim.api.nvim_buf_get_name(0):gsub(vim.fn.expand '%', '')
+  local location = vim.api.nvim_buf_get_name(0):gsub(vim.fn.expand '%:t', '')
   require('oil').toggle_float(location)
 end)
 -- [[ Basic Autocommands ]]
@@ -742,7 +742,6 @@ require('lazy').setup({
       }
     end,
   },
-
   { -- You can easily change to a different colorscheme.
     -- Change the name of the colorscheme plugin below, and then
     -- change the command in the config to whatever the name of that colorscheme is.
