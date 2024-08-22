@@ -90,12 +90,10 @@ vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower win
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 vim.keymap.set('n', '<C-b>', function()
   local location = vim.api.nvim_buf_get_name(0)
-  location = location:gsub('%/.*$', '')
+  location = location:gsub('^(.*)/.*$', '%1')
+  print(location)
   require('oil').toggle_float(location)
 end)
--- [[ Basic Autocommands ]]
---  See `:help lua-guide-autocommands`
-
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
 --  See `:help vim.highlight.on_yank()`
@@ -212,6 +210,7 @@ require('lazy').setup({
       }
     end,
   },
+  { 'akinsho/git-conflict.nvim', version = '*', config = true },
   {
     'stevearc/oil.nvim',
     opts = {
@@ -807,10 +806,6 @@ require('lazy').setup({
       vim.cmd.hi 'Comment gui=none'
     end,
   },
-
-  -- Highlight todo, notes, etc in comments
-  { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
-
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
     config = function()
