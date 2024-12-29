@@ -10,7 +10,18 @@ local function run_git_commands(args)
   handle:close()
   print(result)
 end
+-- [[ Git pull branch to fetch other changes before starting]]
+vim.api.nvim_create_autocmd('VimEnter', {
+  desc = 'Auto git pull on project enter if git is present',
+  group = vim.api.nvim_create_augroup('custom-git-pull', { clear = true }),
 
+  callback = function()
+    if vim.fn.filereadable '.git/config' == 1 then
+      vim.cmd 'silent !git pull'
+    end
+  end,
+})
+-- [[ Git pull branch to fetch other changes before starting]]
 vim.api.nvim_create_user_command('G', run_git_commands, { nargs = '?' })
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = true
@@ -19,6 +30,22 @@ vim.opt.relativenumber = true
 vim.opt.mouse = 'a'
 vim.o.autoread = true
 
+-- [[ Internal NVIM terminal ]]
+local terminalJobId = 0
+vim.keymap.set('n', '<leader>term', function()
+  vim.cmd.vnew()
+  vim.cmd.term()
+  vim.cmd.wincmd 'J'
+  vim.api.nvim_win_set_height(0, 15)
+  terminalJobId = vim.bo.channel
+  if string.find(vim.api.nvim_buf_get_name(0):lower(), 'da/') or string.find(vim.api.nvim_buf_get_name(0):lower(), 'domainagents/') then
+    vim.fn.chansend(terminalJobId, { 'mygcloud activate da\r\n' })
+  elseif string.find(vim.api.nvim_buf_get_name(0):lower(), 'podeo') then
+    vim.fn.chansend(terminalJobId, { 'mygcloud activate podeo\r\n' })
+  elseif string.find(vim.api.nvim_buf_get_name(0):lower(), 'lf') then
+    vim.fn.chansend(terminalJobId, { 'mygcloud activate lf\r\n' })
+  end
+end)
 vim.api.nvim_create_autocmd('TermOpen', {
   group = vim.api.nvim_create_augroup('custom-term-open', { clear = true }),
   callback = function()
@@ -26,6 +53,7 @@ vim.api.nvim_create_autocmd('TermOpen', {
     vim.opt.relativenumber = false
   end,
 })
+-- [[ End Internal NVIM terminal ]]
 vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI', 'FocusGained' }, {
   command = "if mode() != 'c' | checktime | endif",
   pattern = { '*' },
@@ -83,18 +111,6 @@ vim.keymap.set('v', '<leader>dd', '"_dd')
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv")
 vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv")
-vim.keymap.set('n', '<leader>term', function()
-  vim.cmd.vnew()
-  vim.cmd.term()
-  vim.cmd.wincmd 'J'
-  vim.api.nvim_win_set_height(0, 15)
-end)
--- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
--- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
--- is not what someone will guess without a bit more experience.
---
--- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
--- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 --  See `:help wincmd` for a list of all window commands
@@ -105,7 +121,6 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 vim.keymap.set('n', '<C-b>', function()
   local location = vim.api.nvim_buf_get_name(0)
   location = location:gsub('^(.*)/.*$', '%1')
-  print(location)
   require('oil').toggle_float(location)
 end)
 -- Highlight when yanking (copying) text
