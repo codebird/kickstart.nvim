@@ -17,7 +17,7 @@ vim.api.nvim_create_autocmd('VimEnter', {
 
   callback = function()
     if vim.fn.filereadable '.git/config' == 1 then
-      vim.cmd 'silent !git pull'
+      vim.cmd '!git pull'
     end
   end,
 })
