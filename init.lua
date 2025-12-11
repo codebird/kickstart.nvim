@@ -181,16 +181,30 @@ vim.opt.rtp:prepend(lazypath)
 --
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
+  'kdheepak/lazygit.nvim',
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
-
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
   -- keys can be used to configure plugin behavior/loading/etc.
   --
   -- Use `opts = {}` to force a plugin to be loaded.
   --
-
+  {
+    'romus204/referencer.nvim',
+    config = function()
+      require('referencer').setup {
+        enable = true, -- enable after LSP attach
+        format = '  %d reference(s)', -- format string for reference count
+        show_no_reference = true, -- show if refs count = 0
+        kinds = { 5, 6, 8, 12, 13, 14, 23 }, -- LSP SymbolKinds to show references for
+        hl_group = 'Comment', -- default highlight group
+        color = nil, -- optional custom color (overrides hl_group)
+        virt_text_pos = 'eol', -- virtual text position (eol | overlay | right_align)
+        pattern = nil,
+      }
+    end,
+  },
   -- Here is a more advanced example where we pass configuration
   -- options to `gitsigns.nvim`. This is equivalent to the following Lua:
   --    require('gitsigns').setup({ ... })
