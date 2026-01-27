@@ -191,30 +191,6 @@ require('lazy').setup({
   -- Use `opts = {}` to force a plugin to be loaded.
   --
   {
-    'coder/claudecode.nvim',
-    dependencies = { 'folke/snacks.nvim' },
-    config = true,
-    keys = {
-      { '<leader>a', nil, desc = 'AI/Claude Code' },
-      { '<leader>ac', '<cmd>ClaudeCode<cr>', desc = 'Toggle Claude' },
-      { '<leader>af', '<cmd>ClaudeCodeFocus<cr>', desc = 'Focus Claude' },
-      { '<leader>ar', '<cmd>ClaudeCode --resume<cr>', desc = 'Resume Claude' },
-      { '<leader>aC', '<cmd>ClaudeCode --continue<cr>', desc = 'Continue Claude' },
-      { '<leader>am', '<cmd>ClaudeCodeSelectModel<cr>', desc = 'Select Claude model' },
-      { '<leader>ab', '<cmd>ClaudeCodeAdd %<cr>', desc = 'Add current buffer' },
-      { '<leader>as', '<cmd>ClaudeCodeSend<cr>', mode = 'v', desc = 'Send to Claude' },
-      {
-        '<leader>as',
-        '<cmd>ClaudeCodeTreeAdd<cr>',
-        desc = 'Add file',
-        ft = { 'NvimTree', 'neo-tree', 'oil', 'minifiles', 'netrw' },
-      },
-      -- Diff management
-      { '<leader>aa', '<cmd>ClaudeCodeDiffAccept<cr>', desc = 'Accept diff' },
-      { '<leader>ad', '<cmd>ClaudeCodeDiffDeny<cr>', desc = 'Deny diff' },
-    },
-  },
-  {
     'romus204/referencer.nvim',
     config = function()
       require('referencer').setup {
@@ -470,6 +446,12 @@ require('lazy').setup({
           previewer = false,
         })
       end, { desc = '[/] Fuzzily search in current buffer' })
+      vim.keymap.set('n', '<leader>sc', function()
+        vim.cmd.vnew()
+        vim.cmd.term 'claude'
+        vim.cmd.wincmd 'D'
+        vim.api.nvim_win_set_width(0, 60)
+      end)
 
       -- It's also possible to pass additional configuration options.
       --  See `:help telescope.builtin.live_grep()` for information about particular keys
