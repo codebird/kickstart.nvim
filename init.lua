@@ -310,7 +310,19 @@ require('lazy').setup({
       },
     },
     -- Optional dependencies
-    dependencies = { 'nvim-tree/nvim-web-devicons', enabled = true },
+    dependencies = {
+      { 'nvim-tree/nvim-web-devicons', enabled = true },
+      { 'echasnovski/mini.icons', opts = {} },
+      {
+        'malewicz1337/oil-git.nvim',
+        dependencies = { 'stevearc/oil.nvim' },
+        opts = {
+          show_file_highlights = true,
+          show_directory_highlights = false,
+          show_ignored_files = true,
+        },
+      },
+    },
   },
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
